@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyDeleteBuckets",
+      "Effect": "Deny",
+      "Action": "s3:DeleteBucket",
+      "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Sid": "DenyDeleteGlueDatabases",
+      "Effect": "Deny",
+      "Action": "glue:DeleteDatabase",
+      "Resource": "arn:aws:glue:*:*:database/*"
+    }
+  ]
+}
