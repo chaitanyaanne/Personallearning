@@ -1,0 +1,46 @@
+function getOpenTicket(data, alarmTime) {
+    const openTicketsDict = {};
+
+    // Check if the ticket is "Open" and the created time is after the alarm time
+    if (
+        data.issues[0]?.fields?.status?.name === "Open" &&
+        new Date(data.issues[0].fields.created) > new Date(alarmTime)
+    ) {
+        openTicketsDict[data.issues[0].key] = data.issues[0].fields.created;
+    }
+
+    // Return `None` if no open tickets
+    if (Object.keys(openTicketsDict).length === 0) {
+        return null;
+    }
+
+    // If only one open ticket, return the key
+    if (Object.keys(openTicketsDict).length === 1) {
+        return Object.keys(openTicketsDict)[0];
+    }
+
+    // Sort the tickets by created time
+    const sortedItems = Object.entries(openTicketsDict).sort(
+        (a, b) => new Date(a[1]) - new Date(b[1])
+    );
+
+    // Return the key of the first item
+    return sortedItems[0][0];
+}
+
+// Example usage
+const data = {
+    issues: [
+        {
+            key: "TICKET-1",
+            fields: {
+                status: { name: "Open" },
+                created: "2024-12-01T10:00:00"
+            }
+        }
+    ]
+};
+
+const alarmTime = "2024-12-01T09:00:00";
+const openTicket = getOpenTicket(data, alarmTime);
+console.log("Open Ticket Key:", openTicket);
